@@ -73,7 +73,8 @@ OBJECTS       = global.o \
 		moc_logindialog.o \
 		moc_mainwindow.o \
 		moc_registerdialog.o
-DIST          = /home/zdc/Qt/6.5.11/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../../config.ini \
+		/home/zdc/Qt/6.5.11/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/zdc/Qt/6.5.11/gcc_64/mkspecs/common/unix.conf \
 		/home/zdc/Qt/6.5.11/gcc_64/mkspecs/common/linux.conf \
 		/home/zdc/Qt/6.5.11/gcc_64/mkspecs/common/sanitize.conf \
@@ -243,6 +244,7 @@ first: all
 bin/violetchat: ui_logindialog.h ui_mainwindow.h ui_registerdialog.h $(OBJECTS)  
 	@test -d bin/ || mkdir -p bin/
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
+	copy /Y "\home\zdc\learncpp\llfcchat_project\violetchat\config.ini" "\home\zdc\learncpp\llfcchat_project\violetchat\build\Desktop_Qt_6_5_11_GCC_64bit-Debug\.\bin"; cp -f "/home/zdc/learncpp/llfcchat_project/violetchat/config.ini" "/home/zdc/learncpp/llfcchat_project/violetchat/build/Desktop_Qt_6_5_11_GCC_64bit-Debug/./bin";
 
 Makefile: ../../violetchat.pro /home/zdc/Qt/6.5.11/gcc_64/mkspecs/linux-g++/qmake.conf /home/zdc/Qt/6.5.11/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/zdc/Qt/6.5.11/gcc_64/mkspecs/common/unix.conf \
@@ -2227,7 +2229,13 @@ main.o: ../../main.cpp ../../mainwindow.h \
 		/home/zdc/Qt/6.5.11/gcc_64/include/QtGui/QIcon \
 		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/QFile \
 		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qfile.h \
-		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qfiledevice.h
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qfiledevice.h \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/QCoreApplication \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/QDir \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qdir.h \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qfileinfo.h \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/QSettings \
+		/home/zdc/Qt/6.5.11/gcc_64/include/QtCore/qsettings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \

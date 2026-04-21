@@ -2,13 +2,12 @@
 
 HttpMgr::HttpMgr()
 {
-
+    //连接http请求和完成信号，信号槽机制保证队列消费
+    connect(this, &HttpMgr::sig_http_finish, this, &HttpMgr::slot_http_finish);
 }
 
 HttpMgr::~HttpMgr()
 {
-    //连接http请求和完成信号，信号槽机制保证队列消费
-    connect(this, &HttpMgr::sig_http_finish, this, &HttpMgr::slot_http_finish);
 }
 
 void HttpMgr::PostHttpReq(QUrl url, QJsonObject json, ReqId req_id, Modules mod)
