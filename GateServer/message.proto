@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+// 包名：验证码服务相关协议
+package message;
+
+// 验证码服务：提供邮箱验证码获取功能
+service VarifyService {
+  // 获取邮箱验证码
+  // @param request: 包含需要接收验证码的邮箱
+  // @return response: 包含错误码、邮箱和验证码
+  rpc GetVarifyCode (GetVarifyReq) returns (GetVarifyRsp) {}
+}
+
+// 获取验证码请求体
+message GetVarifyReq {
+  // 目标邮箱地址
+  string email = 1;
+}
+
+// 获取验证码响应体
+message GetVarifyRsp {
+  // 错误码：0=成功，非0=失败
+  int32 error = 1;
+  // 接收验证码的邮箱
+  string email = 2;
+  // 生成的验证码
+  string code = 3;
+}
