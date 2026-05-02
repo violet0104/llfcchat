@@ -1,8 +1,8 @@
 #pragma once
 #include <grpcpp/grpcpp.h>
-#include <message.grpc.pb.h>
-#include <const.h>
-#include <Singleton.h>
+#include "message.grpc.pb.h"
+#include "const.h"
+#include "Singleton.h"
 
 using grpc::Channel;
 using grpc::Status;
@@ -15,10 +15,26 @@ class VerifyGrpcClient : public Singleton<VerifyGrpcClient>
     // 让单例模板可以访问本类的私有构造/析构
     friend class Singleton<VerifyGrpcClient>;
 public:
-    GetVarifyRsp GetVarify(std::string email) {
+    GetVarifyRsp GetVarifyCode(std::string email) {
         ClientContext context;
         GetVarifyRsp reply;
         GetVarifyReq request;
         request.set_email(email);
+
+        Status status = stub_->GetVarifyCode(&context, request, &reply);
+        if (status.ok()) {
+            return reply;
+        } else {
+            reply.set_error(ErrorCodes::RPCFailed);
+            return reply;
+        }
     }
+
+private:
+    VerifyGrpcClient() {
+        std::shared_ptr<Channel> channel = grpc::CreateChannel("127.0.0.1:50051", 
+            grpc::InsecureChannelCredentials());
+        stub_ = VarifyService::NewStub(channel);
+    }
+    std::unique_ptr<VarifyService::Stub> stub_;
 };

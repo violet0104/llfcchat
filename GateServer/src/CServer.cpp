@@ -17,7 +17,7 @@ void CServer::Start() {
                 return;
             }
 
-            // 处理新链接，创建HpptConnection类管理新连接
+            // 处理新连接，创建HpptConnection类管理新连接
             std::make_shared<HttpConnection>(std::move(self->_socket))->Start();
             // 继续监听
             self->Start();
