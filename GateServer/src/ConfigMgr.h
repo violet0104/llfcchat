@@ -28,11 +28,9 @@ struct SectionInfo {
 class ConfigMgr
 {
 public:
-    ConfigMgr();
-
-    ~ConfigMgr() {
-        _config_map.clear();
-    }
+    ~ConfigMgr() { _config_map.clear(); }
+    ConfigMgr(const ConfigMgr&) = delete;
+    ConfigMgr& operator=(const ConfigMgr&) = delete;
 
     // 重载ConfigMgr的[]
     SectionInfo& operator[](const std::string& section) {
@@ -40,7 +38,16 @@ public:
         return _config_map[section];
     }
 
+    // C++11以后，多线程访问是线程安全的
+    static ConfigMgr& Inst() {
+        // 静态局部变量：程序生命周期内唯一，仅初始化1次
+        // 静态局部变量的初始化是线程安全的
+        static ConfigMgr cfg_mgr;
+        return cfg_mgr;
+    }
+
 private:
+    ConfigMgr();
     // 存储section和key-value对的map  
     std::map<std::string, SectionInfo> _config_map;
 };

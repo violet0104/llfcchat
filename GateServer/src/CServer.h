@@ -3,6 +3,8 @@
 #include "const.h"
 
 class HttpConnection;
+// std::enable_shared_from_this 是安全生成自身智能指针的工具类
+// 继承它 = 类内部可以用 shared_from_this() 获取自己的 shared_ptr
 class CServer : public std::enable_shared_from_this<CServer>
 {
 public:

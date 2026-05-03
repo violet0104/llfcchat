@@ -1,8 +1,8 @@
 #include "HttpConnection.h"
 #include "LogicSystem.h"
 
-HttpConnection::HttpConnection(tcp::socket socket) 
-    : _socket(std::move(socket)) {
+HttpConnection::HttpConnection(boost::asio::io_context& io_c) 
+    : _socket(io_c) {
 }
 
 void HttpConnection::Start()
