@@ -1,6 +1,7 @@
 #include <vector>
 #include <boost/asio.hpp>
 #include "Singleton.h"
+#include <atomic>
 
 class AsioIOServicePool : public Singleton<AsioIOServicePool>
 {
@@ -27,5 +28,6 @@ private:
     std::vector<IOService> _ioServices; // io_context
     std::vector<WorkPtr> _works; // 有多少个IOService就有多少个WorkPtr
     std::vector<std::thread> _threads; // 有多少个IOService就有多少个thread
-    std::size_t _nextIOService; // 轮询索引
+    // 多线程访问这个_nextIOService可能竞争
+    std::atomic<std::size_t> _nextIOService; // 轮询索引
 };

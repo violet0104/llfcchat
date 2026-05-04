@@ -25,6 +25,7 @@ struct SectionInfo {
 };
 
 
+// 全局配置管理器(Global Config Manager)
 class ConfigMgr
 {
 public:
