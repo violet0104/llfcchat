@@ -36,6 +36,8 @@ public:
     // 重载ConfigMgr的[]
     SectionInfo& operator[](const std::string& section) {
         // 没有section，则自动插入默认值
+        // ????可能存在问题：如果没有section，则自动插入默认值，多线程可能发现读写竞争
+        // 但是config.ini一般只用来读，不用修改吧
         return _config_map[section];
     }
 

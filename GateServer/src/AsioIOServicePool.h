@@ -24,6 +24,7 @@ public:
     void Stop();
 
 private:
+    // 一个线程对应一个io_context，不会竞争
     AsioIOServicePool(std::size_t size = 2 /*std::thread::hardware_concurrency()*/);
     std::vector<IOService> _ioServices; // io_context
     std::vector<WorkPtr> _works; // 有多少个IOService就有多少个WorkPtr
