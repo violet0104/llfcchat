@@ -7,7 +7,8 @@
         "/home/zdc/.local/include",
         "/usr/include",
         "/usr/local/include",
-        "/usr/include/jsoncpp"
+        "/usr/include/jsoncpp",
+        "/usr/include/mysql-cppconn/jdbc"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/g++",

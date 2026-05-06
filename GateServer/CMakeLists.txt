@@ -22,6 +22,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(jsoncpp REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
+find_package(mysql-concpp CONFIG REQUIRED)
 
 # hiredis（RedisMgr 使用）
 find_package(PkgConfig REQUIRED)
@@ -51,6 +52,7 @@ target_link_libraries(GateServer PRIVATE
     gRPC::grpc++_unsecure   # 自动传递 protobuf::libprotobuf + absl
     Threads::Threads
     ${HIREDIS_LIBRARIES}
+    mysql::concpp-jdbc
 )
 
 # test_hiredis ────────────────────────────────────────
@@ -73,6 +75,6 @@ target_link_libraries(test_hiredis PRIVATE
 )
 
 # 复制 config.ini 到构建目录（可选）───────────────
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.ini)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}/config.ini COPYONLY)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/config.ini)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.ini ${CMAKE_BINARY_DIR}/config.ini COPYONLY)
 endif()
