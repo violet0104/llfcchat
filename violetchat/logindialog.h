@@ -18,6 +18,7 @@ public:
 private:
     Ui::LoginDialog *ui;
 signals:
+    // if click the register_btn, then emit the switchRegister signal
     void switchRegister();
 };
 

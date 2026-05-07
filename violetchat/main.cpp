@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
     }
 
     // 获取当前应用程序的路径
-    // 获取当前应用程序的路径
     QString app_path = QCoreApplication::applicationDirPath();
     // 拼接文件名
     QString fileName = "config.ini";

@@ -2,6 +2,7 @@
 #define REGISTERDIALOG_H
 
 #include <QDialog>
+#include <QTimer>
 #include "global.h"
 
 namespace Ui {
@@ -22,11 +23,28 @@ private slots:
 
     void on_sure_btn_clicked();
 
+    void on_return_btn_clicked();
+
 private:
     void initHttpHandlers();
     void showTip(QString str, bool b_ok);
+    void AddTipErr(TipErr te, QString tips);
+    void DelTipErr(TipErr te);
+    bool checkUserValid();
+    bool checkEmailValid();
+    bool checkPassValid();
+    bool checkConfirmValid();
+    bool checkVarifyValid();
+    void ChangeTipPage();
     Ui::RegisterDialog *ui;
+    QMap<TipErr, QString> _tip_errs;
     QMap<ReqId, std::function<void(const QJsonObject&)>> _handlers;
+
+    QTimer* _countdown_timer;
+    int _countdown;
+
+signals:
+    void sigSwitchLogin();
 };
 
 #endif // REGISTERDIALOG_H
