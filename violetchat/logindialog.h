@@ -17,9 +17,15 @@ public:
 
 private:
     Ui::LoginDialog *ui;
+
+public slots:
+    void slot_forget_pwd();
+
 signals:
     // if click the register_btn, then emit the switchRegister signal
     void switchRegister();
+
+    void switchReset();
 };
 
 #endif // LOGINDIALOG_H
