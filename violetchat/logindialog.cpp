@@ -68,6 +68,7 @@ void LoginDialog::initHttpHandlers()
             enableBtn(true);
             return;
         }
+        showTip(tr("登录成功"), true);
         auto email = jsonObj["email"].toString();
 
         //发送信号通知tcpMgr发送长链接
@@ -174,12 +175,12 @@ void LoginDialog::on_login_btn_clicked()
         return ;
     }
 
-    auto user = ui->email_edit->text();
+    auto email = ui->email_edit->text();
     auto pwd = ui->pass_edit->text();
 
     //发送http请求登录
     QJsonObject json_obj;
-    json_obj["user"] = user;
+    json_obj["email"] = email;
     json_obj["passwd"] = xorString(pwd);
     HttpMgr::GetInstance()->PostHttpReq(QUrl(gate_url_prefix + "/user_login"),
                                         json_obj, ReqId::ID_LOGIN_USER, Modules::LOGINMOD);

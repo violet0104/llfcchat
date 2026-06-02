@@ -30,14 +30,14 @@ private:
     std::condition_variable cond_;
 };
 
-class VerifyGrpcClient : public Singleton<VerifyGrpcClient>
+class VarifyGrpcClient : public Singleton<VarifyGrpcClient>
 {
     // 让单例模板可以访问本类的私有构造/析构
-    friend class Singleton<VerifyGrpcClient>;
+    friend class Singleton<VarifyGrpcClient>;
 public:
     GetVarifyRsp GetVarifyCode(std::string email);
 
 private:
-    VerifyGrpcClient();
+    VarifyGrpcClient();
     std::unique_ptr<RPConPool> pool_;
 };

@@ -57,7 +57,7 @@ void RPConPool::returnConnection(std::unique_ptr<VarifyService::Stub> context) {
     cond_.notify_one();
 }
 
-GetVarifyRsp VerifyGrpcClient::GetVarifyCode(std::string email) {
+GetVarifyRsp VarifyGrpcClient::GetVarifyCode(std::string email) {
     ClientContext context;
     GetVarifyRsp reply;
     GetVarifyReq request;
@@ -77,7 +77,7 @@ GetVarifyRsp VerifyGrpcClient::GetVarifyCode(std::string email) {
     }
 }
 
-VerifyGrpcClient::VerifyGrpcClient() {
+VarifyGrpcClient::VarifyGrpcClient() {
     auto& gCfMgr = ConfigMgr::Inst();
     std::string host = gCfMgr["VarifyServer"]["Host"];
     std::string port = gCfMgr["VarifyServer"]["Port"];

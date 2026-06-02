@@ -1,6 +1,7 @@
 #include "LogicSystem.h"
 #include "HttpConnection.h"
 #include "VarifyGrpcClient.h"
+#include "StatusGrpcClient.h"
 #include "RedisMgr.h"
 #include "MysqlMgr.h"
 
@@ -18,7 +19,7 @@ LogicSystem::LogicSystem() {
 	// 获取验证码
 	RegPost("/get_varifycode", [](std::shared_ptr<HttpConnection> connection) {
 		auto body_str = boost::beast::buffers_to_string(connection->_request.body().data());
-		std::cout << "receive body is " << std::endl << body_str << std::endl;
+		std::cout << "receive body is " << std::endl << body_str;
 		connection->_response.set(http::field::content_type, "text/json");
 		Json::Value root; // 响应数据json对象：返回给客户端
 		Json::Reader reader; // json解析器
@@ -42,7 +43,7 @@ LogicSystem::LogicSystem() {
 		}
 
 		auto email = src_root["email"].asString();
-		GetVarifyRsp rsp = VerifyGrpcClient::GetInstance()->GetVarifyCode(email);
+		GetVarifyRsp rsp = VarifyGrpcClient::GetInstance()->GetVarifyCode(email);
 		std::cout << "email is " << email << std::endl;
 		root["error"] = rsp.error();
 		root["email"] = src_root["email"];
@@ -55,7 +56,7 @@ LogicSystem::LogicSystem() {
 	// 用户注册
 	RegPost("/user_register", [](std::shared_ptr<HttpConnection> connection) {
 		auto body_str = boost::beast::buffers_to_string(connection->_request.body().data());
-		std::cout << "receive body is " << body_str << std::endl;
+		std::cout << "receive body is " << body_str;
 		connection->_response.set(http::field::content_type, "text/json");
 		Json::Value root;
 		Json::Reader reader;
@@ -125,7 +126,7 @@ LogicSystem::LogicSystem() {
 	// 重置密码
 	RegPost("/reset_pwd", [](std::shared_ptr<HttpConnection> connection) {
 		auto body_str = boost::beast::buffers_to_string(connection->_request.body().data());
-		std::cout << "receive body is " << body_str << std::endl;
+		std::cout << "receive body is " << body_str;
 		connection->_response.set(http::field::content_type, "text/json");
 		Json::Value root;
 		Json::Reader reader;
@@ -196,7 +197,7 @@ LogicSystem::LogicSystem() {
 	// 用户登录
 	RegPost("/user_login", [](std::shared_ptr<HttpConnection> connection) {
 		auto body_str = boost::beast::buffers_to_string(connection->_request.body().data());
-		std::cout << "receive body is " << body_str << std::endl;
+		std::cout << "receive body is " << body_str;
 		connection->_response.set(http::field::content_type, "text/json");
 		Json::Value root;
 		Json::Reader reader;
@@ -222,6 +223,27 @@ LogicSystem::LogicSystem() {
 			beast::ostream(connection->_response.body()) << jsonstr;
 			return true;
 		}
+
+		//查询StatusServer找到合适的连接
+		auto reply = StatusGrpcClient::GetInstance()->GetChatServer(userInfo.uid);
+		if (reply.error()) {
+			std::cout << " grpc get chat server failed, error is " << reply.error()<< std::endl;
+			root["error"] = ErrorCodes::RPCFailed;
+			std::string jsonstr = root.toStyledString();
+			beast::ostream(connection->_response.body()) << jsonstr;
+			return true;
+		}
+
+		std::cout << "succeed to load userinfo uid is " << userInfo.uid << std::endl << std::endl;
+		root["error"] = 0;
+		root["email"] = email;
+		root["uid"] = userInfo.uid;
+		root["token"] = reply.token();
+		root["host"] = reply.host();
+		root["port"] = reply.port();
+		std::string jsonstr = root.toStyledString();
+		beast::ostream(connection->_response.body()) << jsonstr;
+		return true;
 	});
 }
 
